@@ -1,7 +1,10 @@
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
+
 
 import controllers.MaquinaController;
 import models.Maquina;
@@ -9,7 +12,25 @@ import models.Maquina;
 public class App {
     public static void main(String[] args) throws Exception {
         List<Maquina> maquinas = crearMaquinas();
+        MaquinaController controller = new MaquinaController();
+        System.out.println("Metodo A - filtrarPorSubred > 100:");
+        Stack<Maquina> pila = controller.filtrarPorSubred(maquinas, 100);
+        pila.forEach(System.out::println);
 
+        System.out.println("Metodo B - ordenarPorSubred");
+        Set<Maquina> ordenar = controller.ordenarPorSubred(pila);
+        ordenar.forEach(System.out::println);
+
+
+        System.out.println("Metodo C - Agrupar Por Riesgo");
+        Map<Integer, Queue<Maquina>> mapa = controller.agruparPorRiesgo(maquinas);
+        mapa.forEach((riesgo, cola) -> {
+            System.out.println("Riesgo" + riesgo + "->" + cola);
+        });
+
+        System.out.println("Metodo D - Explotar Grupo");
+            Stack<Maquina> grupoMayor = controller.explotarGrupo(mapa);
+            grupoMayor.forEach(System.out::println);
     }
 
     static List<Maquina> crearMaquinas() {
@@ -66,6 +87,9 @@ public class App {
                 new Maquina("Nodo6", "169.238.150.174", Arrays.asList(6, 14, 3)),
                 new Maquina("DB13", "71.248.50.86", Arrays.asList(17, 11, 12)));
         return maquinas;
+
+
+
 
     }
 }
